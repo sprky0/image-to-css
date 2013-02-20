@@ -10,6 +10,10 @@ class ImageToCSS {
 	protected $buffer = "";
 	protected $html = true;
 
+	public function setWrap($wrap = false) {
+		$this->html = $wrap;
+	}
+
 	public function convert($image, $output_file = null) {
 
 		$this->buffer = "";

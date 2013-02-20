@@ -1,8 +1,22 @@
 <?php
 
+include('image_to_css.php');
+
 if (!empty($_FILES)) {
-	var_dump($_FILES);
-	exit();
+
+	$converter = new ImageToCSS();
+	$converter->setWrap(false);
+
+	$result = array();
+
+	foreach($_FILES as $file) {
+
+		$result[] = $converter->convert($file['tmp_name']);
+
+	}
+
+	var_dump($result);
+
 }
 
 ?><!DOCTYPE html>
@@ -16,6 +30,12 @@ if (!empty($_FILES)) {
 		<input type="file" name="file" id="file"><br />
 		<input type="submit" name="submit" value="Submit" />
 	</form>
+
+<?php if(isset($result)) { ?>
+
+<?php echo implode("\n\n", $result); ?>
+
+<?php } ?>
 
 </body>	
 </html>
