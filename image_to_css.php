@@ -39,20 +39,6 @@ class ImageToCSS {
 		$this->width = imagesx($i);
 		$this->height = imagesy($i);
 
-		// first loop populates the pallete
-		// the reason for this is that we may try to apply compression
-		// can replace the image operation on the second loop with direct access to an array with the meta from this loop later
-		/*
-		for($x = 0; $x < $this->width; $x++) {
-			for($y = 0; $y < $this->height; $y++) {
-				$colors = imagecolorsforindex($i,$rgb);
-				$rgb = imagecolorat($i,$x,$y);
-				$colors = imagecolorsforindex($i,$rgb);
-				$this->color($colors['red'],$colors['green'],$colors['blue']);
-			}
-		}
-		*/
-
 		for($x = 0; $x < $this->width; $x++) {
 			for($y = 0; $y < $this->height; $y++) {
 				$rgb = imagecolorat($i,$x,$y);
@@ -87,10 +73,7 @@ class ImageToCSS {
 		if ($a < 1)
 			return;
 
-		// $r$g$b$a classname is long, could shorten it
-
 		if (!isset($this->colors["c$r$g$b$a"])) {
-			// $this->colors["c$r$g$b$a"] = ".cc$r$g$b$a{background-color:rgba($r,$g,$b,$a)}";
 			$hex = $this->rgbToHex($r,$g,$b);
 			$this->colors["c$r$g$b$a"] = ".c$r$g$b$a{background-color:#{$hex}}";
 		}
@@ -106,14 +89,6 @@ class ImageToCSS {
 		$this->buffer .= "<{$this->pixelElement} class=\"{$classes}\"></{$this->pixelElement}>";
 
 	}
-
-	/*
-	private function color($r,$g,$b) {
-		$rgb = imagecolorat($i,$x,$y);
-		$colors = imagecolorsforindex($i,$rgb);
-		$this->pixel($x,$y,$colors['red'],$colors['green'],$colors['blue'],1 - ($colors['alpha'] / 127));	
-	}
-	*/
 
 	private function rgbToHex($r,$g,$b) {
 		return str_pad(dechex($r), 2, "0", STR_PAD_LEFT) . str_pad(dechex($g), 2, "0", STR_PAD_LEFT) . str_pad(dechex($b), 2, "0", STR_PAD_LEFT);
